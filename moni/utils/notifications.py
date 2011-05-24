@@ -1,23 +1,20 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 
+##############################################################################
+# notifications.py
+# Base notifications library
 #
-# moni.py
-# Base Monitoring Library
-#
-# [2010-11-06] - kkelley: Initial Creation
-#
+# [2010-11-06] kkelley: Initial Creation
 
-#
+##############################################################################
 # Config
-#
+
 import cStringIO
 import smtplib
 import time
 
-
-#
+##############################################################################
 # Code
-#
 
 class Notification(MoniBase):
     def __init__(self):

@@ -1,13 +1,15 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 
 ##############################################################################
 # logs.py
 # Base Log File Monitoring Library
 #
-# [2010-12-04] - kkelley: Cleaned up code posted to Google Code at
-#                         http://code.google.com/p/moni/
-# [2010-11-06] - kkelley: Initial Creation
-#
+# [2010-12-25] kkelley: Added 'buildBlock' and 'scanBlock' functions.
+#   Removed 'scanFile' function. Updated 'runTest'.
+#   function.
+# [2010-12-04] kkelley: Cleaned up code posted to Google Code at
+#   http://code.google.com/p/moni/
+# [2010-11-06] kkelley: Initial Creation
 
 ##############################################################################
 # Config
@@ -23,13 +25,30 @@ import time
 
 class Logs(object):
     def __init__(self, config):
-        self.cache = None
+        self.ConfigKeys = ('Debug', 'Logger', 'File', 'FileCache', 'Filename', 'SearchString')
+
         self.File = None
+        self.FileCache = None
         self.FileData = None
         self.Filename = None
+        self.Filesize = None
         self.MessageBlock = None
         self.Pattern = None
         self.SearchString = None
+
+        self.Debug = False
+        self.Logger = None
+
+        if type(config) is not dict:
+            return ('0001', "Configuration data is invalid. Please see README.txt")
+        if len(config) < 2:
+            return ('0001', "Configuration data is invalid. Please see README.txt")
+
+        for key in self.ConfigKeys:
+            try:
+                exec("self.%s = config['%s']")
+            except:
+                continue
 
     def checkFilesize(self):
         def getFilesize(fn):
@@ -79,14 +98,36 @@ class Logs(object):
             if err:
                 return err
 
-    def scanFile(self):
+    def parseDate(self, line):
+        pass
+
+    def buildBlock(self):
         if self.FileData is not None:
             self.MessageBlock = []
             for line in FileData:
                 if self.parseDate(line):
                     self.MessageBlock.append(line)
 
+    def scanBlock(self, Message):
+        pass
 
     def runTest(self):
         if self.Pattern is not None:
-            self.
+            pass
+
+        if self.MessageBlock is not None:
+            if len(self.MessageBlock) > 0:
+                for Message in self.MessageBlock:
+                    self.scanBlock(Message)
+
+##############################################################################
+# if __main__
+
+if __name__ == "__main__":
+    log_config = {}
+    log_config['filename'] = "test.txt"
+    log_config['search'] = ["string 1", "string 2"]
+
+    r = Logs(config)
+    r.openFile(filename)
+    r.loadFile()
